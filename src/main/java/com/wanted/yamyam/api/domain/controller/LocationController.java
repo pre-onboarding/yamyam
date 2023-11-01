@@ -35,10 +35,12 @@ public class LocationController {
      * 업로드 요청한 csv 파일을 데이터베이스에 저장한 후 저장된 데이터 갯수를 반환합니다.
      * @param file csv 파일
      * @return 저장된 데이터 갯수를 반환합니다.
-     * @throws IOException parsing 중 오류가 발생
+     * @throws IOException parsing 중 오류 발생
+     * @author 정성국
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<LocationUploadResponse> save(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<LocationUploadResponse> uploadLocationFile(@RequestParam("file") MultipartFile file)
+            throws IOException {
 
         int countTotal = locationService.saveAllLocations(parseCsvFile(file));
 
@@ -47,6 +49,12 @@ public class LocationController {
                 .body(new LocationUploadResponse(countTotal));
     }
 
+    /**
+     * 업로드된 csv 파일을 받아 parsing한 후 List 형태로 반환합니다.
+     * @param file csv 파일
+     * @return List로 parsing된 시군구 데이터를 반환합니다.
+     * @throws IOException parsing 중 오류 발생
+     */
     private List<Location> parseCsvFile(MultipartFile file) throws IOException {
         CsvMapper csvMapper = new CsvMapper();
         CsvSchema csvSchema = CsvSchema.emptySchema().withHeader();
