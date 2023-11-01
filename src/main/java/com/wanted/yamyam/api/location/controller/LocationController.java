@@ -1,11 +1,11 @@
-package com.wanted.yamyam.api.domain.controller;
+package com.wanted.yamyam.api.location.controller;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.wanted.yamyam.api.common.dto.response.LocationUploadResponse;
-import com.wanted.yamyam.api.domain.service.LocationService;
+import com.wanted.yamyam.api.location.dto.LocationUploadResponse;
+import com.wanted.yamyam.api.location.service.LocationService;
 import com.wanted.yamyam.domain.location.entity.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

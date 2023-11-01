@@ -1,4 +1,4 @@
-package com.wanted.yamyam.api.domain.service;
+package com.wanted.yamyam.api.location.service;
 
 import com.wanted.yamyam.domain.location.entity.Location;
 import com.wanted.yamyam.domain.location.repo.LocationRepository;
