@@ -13,7 +13,8 @@ public enum ErrorCode {
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "중복된 유저네임이 있습니다."),
     NON_EXISTENT_MEMBER(HttpStatus.BAD_REQUEST, "존재하지 않는 멤버입니다."),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "올바르지 않는 비밀번호입니다."),
-    WRONG_USERNAME(HttpStatus.BAD_REQUEST, "올바르지 않는 유저네임입니다.");
+    WRONG_USERNAME(HttpStatus.BAD_REQUEST, "올바르지 않는 유저네임입니다."),
+    LAT_LON_NO_VALUE(HttpStatus.BAD_REQUEST, "lat과lon값을 입력해주세요.");
 
     private final HttpStatus httpStatus;
     private final String message;
