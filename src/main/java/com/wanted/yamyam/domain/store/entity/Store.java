@@ -32,6 +32,6 @@ public class Store {
     private String category;
 
     @Column
-    private String rating;
+    private Double rating;
 
 }
