@@ -25,7 +25,7 @@ public class Location {
 
     private String sgg;
 
-    private String lat;
+    private double lat;
 
-    private String lon;
+    private double lon;
 }
