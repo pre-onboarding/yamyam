@@ -33,13 +33,22 @@ public class StoreSchedulerService {
 
     @Value("${apiKey}")
     private String apiKey;
-
+    private static final String chinaFoodUrl = "https://openapi.gg.go.kr/Genrestrtchifood";
+    private static final String soupUrl = "https://openapi.gg.go.kr/Genrestrtsoup";
+    private static final String japanFoodUrl = "https://openapi.gg.go.kr/Genrestrtjpnfood";
     private final StoreRepository storeRepository;
 
+
+    @PostConstruct
+    public void getData() throws JsonProcessingException {
+        getStore(chinaFoodUrl,"Genrestrtchifood");
+        getStore(soupUrl,"Genrestrtsoup");
+        getStore(japanFoodUrl,"Genrestrtjpnfood");
+    }
     @Transactional
-    public URI getUri(Integer page) {
+    public URI getUri(Integer page,String url) {
         return UriComponentsBuilder
-                .fromUriString("https://openapi.gg.go.kr/Genrestrtchifood")
+                .fromUriString(url)
                 .queryParam("key", apiKey)
                 .queryParam("type", "json")
                 .queryParam("pIndex", page)
@@ -50,25 +59,47 @@ public class StoreSchedulerService {
     }
 
     @Transactional
-    @PostConstruct
-    public void getStore() throws  JsonProcessingException {
-        URI uri = getUri(2);
+    public void getStore(String url,String str) throws  JsonProcessingException {
+        URI uri = getUri(1,url);
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(uri, String.class);
+        int i = checkTotalCount(response,str);
+        int i1 = i/100 +1;
+        if(i%100>0){
+            i1 ++;
+        }
+        for (int j = 1; j < i1; j++) {
+            URI uri2 = getUri(j,url);
+            String response2 = restTemplate.getForObject(uri2, String.class);
+            List<StoreSchedulerResponse> responses = getStore2(response2,str);
+            List<Store> store = StoreSchedulerResponse.toListEntity(responses);
+            storeRepository.saveAll(store);
+        }
+    }
+
+    public int checkTotalCount(String response,String str) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode root = objectMapper.readTree(response);
 
         // JSON 데이터가 배열 내에 있으므로 배열 요소에 접근합니다.
-        JsonNode rows = root.at("/Genrestrtchifood/1/row");
+        JsonNode head = root.at("/"+str+"/0/head");
+        log.info("a");
+        return head.get(0).get("list_total_count").asInt();
+
+    }
+    
+    public List<StoreSchedulerResponse>  getStore2(String  response,String str) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode root = objectMapper.readTree(response);
+
+        // JSON 데이터가 배열 내에 있으므로 배열 요소에 접근합니다.
+        JsonNode rows = root.at("/"+str+"/1/row");
 
         String json = objectMapper.writeValueAsString(rows);
-        List<StoreSchedulerResponse> responses = objectMapper.readValue(json, new TypeReference<List<StoreSchedulerResponse>>() {
-        });
-        List<Store> store = StoreSchedulerResponse.toListEntity(responses);
-        storeRepository.saveAll(store);
-
-
+        return objectMapper.readValue(json, new TypeReference<List<StoreSchedulerResponse>>() {});
+        
     }
 
 
