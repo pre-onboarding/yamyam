@@ -34,4 +34,6 @@ public class Store {
     @Column
     private String rating;
 
+    @Column
+    private String state;
 }
