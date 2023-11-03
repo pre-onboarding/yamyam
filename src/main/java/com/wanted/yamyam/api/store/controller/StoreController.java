@@ -21,8 +21,8 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping
-    public ResponseEntity storeList(@PageableDefault Pageable pageable, @RequestParam String lat, @RequestParam String lon, @RequestParam Double range) {
-        StoreListResponse response = storeService.storeList(pageable, lat, lon, range);
+    public ResponseEntity storeList(@RequestParam String sort, @RequestParam int page, @RequestParam int pageCount, @RequestParam String lat, @RequestParam String lon, @RequestParam double range) {
+        StoreListResponse response = storeService.storeList(sort, page, pageCount, lat, lon, range);
 
         return ResponseEntity.ok().body(response);
     }

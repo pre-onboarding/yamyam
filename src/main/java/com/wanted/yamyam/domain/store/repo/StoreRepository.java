@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface StoreRepository extends JpaRepository<Store,Long> {
 
-    @Query("select new com.wanted.yamyam.api.store.dto.StoreResponse(a.lat, a.lon, a.name, a.address, a.category, a.rating, a.lat) from Store a where a.lat >= :lat1 and a.lat <= :lat2 and a.lon >= :lon1 and a.lon <= :lon2")
-    List<StoreResponse> findByAllList(@Param("lat1") Double lat1, @Param("lon1") Double lon1, @Param("lat2") Double lat2, @Param("lon2") Double lon2);
+    @Query("select new com.wanted.yamyam.api.store.dto.StoreResponse(a.lat, a.lon, a.name, a.address, a.category, a.rating) from Store a where a.lat >= :lat1 and a.lat <= :lat2 and a.lon >= :lon1 and a.lon <= :lon2")
+    List<StoreResponse> findByAllList(@Param("lat1") double lat1, @Param("lon1") double lon1, @Param("lat2") double lat2, @Param("lon2") double lon2);
 }
