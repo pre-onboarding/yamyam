@@ -32,4 +32,13 @@ public class LocationService {
         return locations.size();
     }
 
+    /**
+     * 저장된 전체 시군구 데이터를 반환합니다.
+     * @return 전체 시군구 데이터 목록
+     */
+    @Transactional(readOnly = true)
+    public List<Location> getAllLocations() {
+        return locationRepository.findAll();
+    }
+
 }
