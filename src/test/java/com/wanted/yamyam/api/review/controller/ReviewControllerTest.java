@@ -1,10 +1,10 @@
 package com.wanted.yamyam.api.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.yamyam.api.location.controller.LocationController;
 import com.wanted.yamyam.api.review.dto.ReviewRequest;
 import com.wanted.yamyam.api.review.dto.ReviewResponse;
 import com.wanted.yamyam.api.review.service.ReviewService;
+import com.wanted.yamyam.api.store.service.StoreService;
 import com.wanted.yamyam.domain.member.entity.Member;
 import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.store.entity.Store;
@@ -32,6 +32,9 @@ public class ReviewControllerTest {
 
     @MockBean
     ReviewService reviewService;
+
+    @MockBean
+    StoreService storeService;
 
     @Autowired
     private ObjectMapper objectMapper;
