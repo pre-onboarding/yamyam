@@ -29,8 +29,8 @@ public class StoreServiceTest {
     StoreService storeService;
 
     @Test
-    @DisplayName("맛집 평가 저장 및 맛집 전체 평점 업데이트")
-    void shouldSaveStoreScoreAndUpdateStoreRating() {
+    @DisplayName("신규 맛집 평가 점수를 반영하여 맛집 평점 업데이트")
+    void shouldUpdateStoreRating() {
 
         var testScore = 5;
         var testContent = "맛있어요!!";
