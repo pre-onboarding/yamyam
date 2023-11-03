@@ -22,6 +22,8 @@ public class StoreSchedulerResponse {
     private String address;
     @JsonProperty("SANITTN_BIZCOND_NM")
     private String category;
+    @JsonProperty("BSN_STATE_NM")
+    private String state;
 
     public static Store toEntity(StoreSchedulerResponse res){
         return Store.builder()
@@ -30,6 +32,7 @@ public class StoreSchedulerResponse {
                 .address(res.getAddress())
                 .name(res.getName())
                 .category(res.getCategory())
+                .state(res.getState())
                 .build();
     }
 
