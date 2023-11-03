@@ -4,7 +4,6 @@ import lombok.*;
 
 @Getter
 @AllArgsConstructor
-@Setter
 public class StoreResponse {
 
     private double lat;
@@ -19,6 +18,7 @@ public class StoreResponse {
 
     private double rating;
 
+    @Setter
     private double distance;
 
     public StoreResponse(double lat, double lon, String name, String address, String category, double rating) {
