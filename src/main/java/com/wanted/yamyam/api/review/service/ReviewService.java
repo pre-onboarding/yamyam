@@ -27,16 +27,23 @@ public class ReviewService {
      */
     @Transactional
     public Review saveReview(Review review) {
-        if (reviewRepository.findById(new ReviewId(review.getMember(), review.getStore())).isPresent()) {
-            throw new ErrorException(ErrorCode.DUPLICATE_REVIEW);
-        }
-        // TODO: member와 store에 id만 지정해서 저장하는 경우 Detached Entity Passed to Persist 가 발생하였습니다.
-        //  해결 방법을 찾을 때까지 임시로 각각의 데이터를 불러와서 지정하도록 하겠습니다.
-        var test = Review.builder().member(memberRepository.findById(review.getMember().getId()).get())
-                .store(storeRepository.findById(review.getStore().getId()).get())
+        validateData(review);
+        var reviewEntity = Review.builder()
+                .member(memberRepository.getReferenceById(review.getMember().getId()))
+                .store(storeRepository.getReferenceById(review.getStore().getId()))
                 .score(review.getScore())
                 .content(review.getContent()).build();
-        return reviewRepository.save(test);
+        return reviewRepository.save(reviewEntity);
+    }
+
+    private void validateData(Review review) {
+        // 존재하지 않는 맛집인 경우
+        if (!storeRepository.existsById(review.getStore().getId()))
+            throw new ErrorException(ErrorCode.NON_EXISTENT_STORE);
+
+        // 이미 작성한 리뷰가 존재하는 경우
+        if (reviewRepository.existsById(new ReviewId(review.getMember(), review.getStore())))
+            throw new ErrorException(ErrorCode.DUPLICATE_REVIEW);
     }
 
 }
