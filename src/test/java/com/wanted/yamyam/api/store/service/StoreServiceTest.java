@@ -27,7 +27,8 @@ class StoreServiceTest {
     @Transactional(readOnly = true)
     void storeList() {
         // given
-        String sort = "distance";
+        String sortByDistance = "distance";
+        String sortByRating = "rating";
         int page = 0;
         int pageCount = 10;
         String lat = "38.0362201660";
@@ -35,9 +36,11 @@ class StoreServiceTest {
         double range = 100.0;
 
         // when
-        StoreListResponse response = storeService.storeList(sort, page, pageCount, lat, lon, range);
+        StoreListResponse response = storeService.storeList(sortByDistance, page, pageCount, lat, lon, range);
+        StoreListResponse response2 = storeService.storeList(sortByRating, page, pageCount, lat, lon, range);
 
         // then
         assertThat(response.getStores()).isNotNull();
+        assertThat(response2.getStores()).isNotNull();
     }
 }

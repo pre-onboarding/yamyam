@@ -23,7 +23,8 @@ class StoreControllerTest {
     @DisplayName("맛집 조회 목록")
     void storeList() throws Exception {
         // given
-        String sort = "distance";
+        String sortByDistance = "distance";
+        String sortByRating = "rating";
         int page = 0;
         int pageCount = 10;
         String lat = "38.0362201660";
@@ -31,12 +32,20 @@ class StoreControllerTest {
         double range = 100.0;
 
         // when
+        /** distance로 정렬 */
         ResultActions resultActions = mvc.perform(get("/api/v1/stores?sort="
-                + sort + "&page=" + page + "&pageCount=" + pageCount + "&lat=" + lat + "&lon=" + lon + "&range=" + range)
+                + sortByDistance + "&page=" + page + "&pageCount=" + pageCount + "&lat=" + lat + "&lon=" + lon + "&range=" + range)
+                .characterEncoding("UTF-8")
+        );
+
+        /** rating으로 정렬 */
+        ResultActions resultActions2 = mvc.perform(get("/api/v1/stores?sort="
+                + sortByRating + "&page=" + page + "&pageCount=" + pageCount + "&lat=" + lat + "&lon=" + lon + "&range=" + range)
                 .characterEncoding("UTF-8")
         );
 
         // then
         resultActions.andExpect(status().isOk());
+        resultActions2.andExpect(status().isOk());
     }
 }
