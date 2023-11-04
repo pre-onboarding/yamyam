@@ -55,7 +55,7 @@ public class LocationService {
     }
 
     private List<Location> getLocationsFromRedis() {
-        return (List<Location>) redisTemplate.opsForValue().get("locations");
+        return (List<Location>) redisTemplate.opsForValue().get(KEY);
     }
 
 }
