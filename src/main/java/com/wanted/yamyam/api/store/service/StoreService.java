@@ -8,11 +8,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static com.wanted.yamyam.global.exception.ErrorCode.LAT_LON_NO_VALUE;
+import com.wanted.yamyam.domain.review.entity.Review;
+import com.wanted.yamyam.domain.review.repo.ReviewRepository;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +22,8 @@ import static com.wanted.yamyam.global.exception.ErrorCode.LAT_LON_NO_VALUE;
 public class StoreService {
 
     private final StoreRepository storeRepository;
+  
+    private final ReviewRepository reviewRepository;
 
     /**
      * 맛집 목록 조회
@@ -121,5 +125,19 @@ public class StoreService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c;
+    }
+
+    /**
+     * 맛집 평가가 추가된 경우 해당 맛집 평가를 받아 전체 맛집 평점을 계산하여 갱신 후 갱신된 평점을 반환합니다.
+     * @param review 새로운 맛집 평가
+     * @return 갱신된 맛집 평점
+     */
+    @Transactional
+    public double updateRating(Review review) {
+        long oldRatingTotalCount = reviewRepository.countByStoreId(review.getStore().getId()) - 1;
+        double oldRating = review.getStore().getRating();
+        double newRatingDouble = (oldRating * oldRatingTotalCount + review.getScore()) / (oldRatingTotalCount + 1);
+        storeRepository.updateRatingById(review.getStore().getId(), newRating);
+        return newRating;
     }
 }
