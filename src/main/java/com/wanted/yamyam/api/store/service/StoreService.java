@@ -136,7 +136,7 @@ public class StoreService {
     public double updateRating(Review review) {
         long oldRatingTotalCount = reviewRepository.countByStoreId(review.getStore().getId()) - 1;
         double oldRating = review.getStore().getRating();
-        double newRatingDouble = (oldRating * oldRatingTotalCount + review.getScore()) / (oldRatingTotalCount + 1);
+        double newRating = (oldRating * oldRatingTotalCount + review.getScore()) / (oldRatingTotalCount + 1);
         storeRepository.updateRatingById(review.getStore().getId(), newRating);
         return newRating;
     }
