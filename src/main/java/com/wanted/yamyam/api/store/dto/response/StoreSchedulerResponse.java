@@ -2,11 +2,13 @@ package com.wanted.yamyam.api.store.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.wanted.yamyam.domain.store.entity.StoreId;
 import lombok.Getter;
 import com.wanted.yamyam.domain.store.entity.Store;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,20 +27,25 @@ public class StoreSchedulerResponse {
     @JsonProperty("BSN_STATE_NM")
     private String state;
 
-    public static Store toEntity(StoreSchedulerResponse res){
+
+    public static Store toEntity(StoreSchedulerResponse res) {
+
         return Store.builder()
                 .lat(res.getLat())
                 .lon(res.getLon())
-                .address(res.getAddress())
                 .name(res.getName())
+                .address(res.getAddress())
                 .category(res.getCategory())
-                .state(res.getState())
                 .build();
+
     }
 
-    public static List<Store> toListEntity(List<StoreSchedulerResponse> item){
-        return item.stream()
+    public static List<Store> toListEntity(List<StoreSchedulerResponse> list) {
+        return list.stream()
+                .filter(dto -> dto.getState().equals("영업"))
+                .filter(dto -> dto.getAddress() != null)
                 .map(StoreSchedulerResponse::toEntity)
                 .collect(Collectors.toList());
+
     }
 }

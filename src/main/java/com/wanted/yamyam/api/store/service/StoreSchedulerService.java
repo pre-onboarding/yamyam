@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -39,30 +40,19 @@ public class StoreSchedulerService {
     private final StoreRepository storeRepository;
 
     @Transactional
-//    @Scheduled(cron = "20 23 13 * * *")
-    @PostConstruct
+    @Scheduled(cron = "0 0 4 * * *")
+    // 개발할 때는 즉시 데이터를 넣어주는 @PostConstruct 추천
+//    @PostConstruct
     public void getData() throws JsonProcessingException {
         getStore(CHINA_FOOD_URL, CHINA_FOOD);
         getStore(JAPAN_FOOD_URL, JAPAN_FOOD);
         getStore(SOUP_URL, SOUP);
-
-
-
-    }
-    @Transactional
-    @Scheduled(initialDelay = 60000, fixedDelay = 5000000)
-    public void deleteByState(){
-        storeRepository.countDeleteStore();
-//        log.info(String.valueOf(count));
-//        long count2 = storeRepository.countNull();
-//        log.info(String.valueOf(count2));
     }
 
     @Transactional
     public void getStore(String url, String str) throws JsonProcessingException {
 
-        int totalCount = getTotalCount(url, str);
-        int maxPage = getMaxPage(totalCount);
+        int maxPage = getMaxPage(url, str);
         for (int j = 1; j <= maxPage; j++) {
             URI uri = getUri(j, url);
             saveStore(uri,str);
@@ -80,7 +70,7 @@ public class StoreSchedulerService {
     }
 
     @Transactional(readOnly = true)
-    public int getTotalCount(String url, String str) throws JsonProcessingException {
+    public int getMaxPage(String url, String str) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -93,17 +83,14 @@ public class StoreSchedulerService {
         // JSON 데이터가 배열 내에 있으므로 배열 요소에 접근합니다.
         JsonNode head = root.at("/" + str + "/0/head");
 
-        return head.get(0).get("list_total_count").asInt();
-    }
-
-    @Transactional(readOnly = true)
-    public int getMaxPage(int totalCount) {
+        int totalCount = head.get(0).get("list_total_count").asInt();
         int maxPage = totalCount / 100;
         if (totalCount % 100 > 0) {
             maxPage++;
         }
         return maxPage;
     }
+
 
     @Transactional(readOnly = true)
     public URI getUri(int page, String url) {
