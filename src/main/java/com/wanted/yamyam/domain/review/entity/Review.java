@@ -22,7 +22,10 @@ public class Review {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumns({
+            @JoinColumn(name = "store_name"),
+            @JoinColumn(name = "store_address")
+    })
     private Store store;
 
     @Column

@@ -11,10 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@IdClass(StoreId.class)
 public class Store {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "store_name")
+    private String name;
+
+    @Id
+    @Column(name = "store_address")
+    private String address;
 
     @Column
     private String lat;
@@ -23,17 +29,9 @@ public class Store {
     private String lon;
 
     @Column
-    private String name;
-
-    @Column
-    private String address;
-
-    @Column
     private String category;
 
     @Column
     private String rating;
 
-    @Column
-    private String state;
 }
