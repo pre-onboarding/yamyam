@@ -15,7 +15,8 @@ public enum ErrorCode {
     NON_EXISTENT_MEMBER(HttpStatus.BAD_REQUEST, "존재하지 않는 멤버입니다."),
     NON_EXISTENT_STORE(HttpStatus.BAD_REQUEST, "존재하지 않는 맛집입니다."),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "올바르지 않는 비밀번호입니다."),
-    WRONG_USERNAME(HttpStatus.BAD_REQUEST, "올바르지 않는 유저네임입니다.");
+    WRONG_USERNAME(HttpStatus.BAD_REQUEST, "올바르지 않는 유저네임입니다."),
+    LAT_LON_NO_VALUE(HttpStatus.BAD_REQUEST, "lat과lon값을 입력해주세요.");
 
     private final HttpStatus httpStatus;
     private final String message;
