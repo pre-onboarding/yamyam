@@ -3,6 +3,7 @@ package com.wanted.yamyam.api.location.service;
 import com.wanted.yamyam.domain.location.entity.Location;
 import com.wanted.yamyam.domain.location.repo.LocationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,9 @@ import java.util.List;
 @Service
 public class LocationService {
 
+    private static final String KEY = "locations";
     private final LocationRepository locationRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 업로드된 시군구 데이터를 받아 기존 데이터 전체 삭제 후 새로 저장합니다.
@@ -29,6 +32,7 @@ public class LocationService {
     public int saveAllLocations(List<Location> locations) {
         locationRepository.deleteAllInBatch();
         locations = locationRepository.saveAll(locations);
+        saveLocationsToRedis(locations);
         return locations.size();
     }
 
@@ -38,7 +42,20 @@ public class LocationService {
      */
     @Transactional(readOnly = true)
     public List<Location> getAllLocations() {
-        return locationRepository.findAll();
+        List<Location> locations = getLocationsFromRedis();
+        if (locations == null) {
+            locations = locationRepository.findAll();
+            saveLocationsToRedis(locations);
+        }
+        return locations;
+    }
+
+    private void saveLocationsToRedis(List<Location> locations) {
+        redisTemplate.opsForValue().set(KEY, locations);
+    }
+
+    private List<Location> getLocationsFromRedis() {
+        return (List<Location>) redisTemplate.opsForValue().get("locations");
     }
 
 }
