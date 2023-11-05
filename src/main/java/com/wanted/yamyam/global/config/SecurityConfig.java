@@ -38,8 +38,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.GET, "/mebmers").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "members").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/members").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/members").authenticated()
                         .requestMatchers("/stores/**", "/locations/**").authenticated()
                         .anyRequest().permitAll()
                 )

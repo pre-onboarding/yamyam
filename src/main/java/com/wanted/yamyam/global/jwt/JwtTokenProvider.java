@@ -1,12 +1,8 @@
 package com.wanted.yamyam.global.jwt;
 
-import com.wanted.yamyam.global.exception.ErrorCode;
-import com.wanted.yamyam.global.exception.ErrorException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +17,6 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
-    private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
     private final String accessSecret;
     private final String refreshSecret;
     private final long accessTokenValidity;
@@ -81,27 +76,14 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public void validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(accessSecretKey).build().parseClaimsJws(token);
-        } catch (ExpiredJwtException e) {
-            logger.info("Expired JWT token.");
-            throw new ExpiredJwtException(null, null, null);
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException(null);
-        }
+        Jwts.parserBuilder().setSigningKey(accessSecretKey).build().parseClaimsJws(token);
     }
 
     public Claims parseToken(String token) {
-//        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(refreshSecretKey)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-//        } catch (ExpiredJwtException e) {
-//            throw new ExpiredJwtTokenException(JsonResponseStatus.REFRESH_TOKEN_EXPIRED);
-//        } catch (JwtException | IllegalArgumentException e) {
-//            throw new RefreshTokenException(JsonResponseStatus.INVALID_JWT);
-//        }
+        return Jwts.parserBuilder()
+                .setSigningKey(refreshSecretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
