@@ -3,6 +3,7 @@ package com.wanted.yamyam.api.member.controller;
 import com.wanted.yamyam.api.member.dto.MemberLocationRequest;
 import com.wanted.yamyam.api.member.dto.MemberRequest;
 import com.wanted.yamyam.api.member.dto.MemberLoginResponse;
+import com.wanted.yamyam.api.member.dto.MemberResponse;
 import com.wanted.yamyam.api.member.service.MemberService;
 import com.wanted.yamyam.domain.member.entity.Member;
 import com.wanted.yamyam.global.jwt.JwtTokenProvider;
@@ -33,5 +34,11 @@ public class MemberController {
         String emailId = SecurityContextHolder.getContext().getAuthentication().getName();
         memberService.update(memberLocationRequest, Long.parseLong(emailId));
         return "완료";
+    }
+
+    @GetMapping("/members")
+    public MemberResponse getInfo() {
+        String emailId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.getInfo(Long.parseLong(emailId));
     }
 }
