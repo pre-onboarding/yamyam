@@ -2,13 +2,11 @@ package com.wanted.yamyam.api.store.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.wanted.yamyam.domain.store.entity.StoreId;
 import lombok.Getter;
 import com.wanted.yamyam.domain.store.entity.Store;
 
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -28,6 +26,7 @@ public class StoreSchedulerResponse {
     private String state;
 
 
+    // StoreSchedulerResponse를 Store로 반환해줌
     public static Store toEntity(StoreSchedulerResponse res) {
 
         return Store.builder()
@@ -40,6 +39,11 @@ public class StoreSchedulerResponse {
 
     }
 
+    /*
+    * dto가 영업이거나 id값인 address가 null이 아닐경우
+    * 리스트에서 받은 dto들을 toEntity 반환해서 store값으로 변경
+    * store 값들을 Collectors.toList를 통해 List<Store>로 변경
+    * */
     public static List<Store> toListEntity(List<StoreSchedulerResponse> list) {
         return list.stream()
                 .filter(dto -> dto.getState().equals("영업"))
