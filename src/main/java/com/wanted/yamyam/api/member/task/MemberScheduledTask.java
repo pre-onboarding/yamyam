@@ -39,7 +39,7 @@ public class MemberScheduledTask {
     public void recommendLunch() {
         List<Member> members = memberRepository.findAllByUseRecommendLunch(true);
         members.forEach(member -> {
-            List<StoreResponse> stores = getTop5StoresByDistance(member.getLat(), member.getLon(), 500.0);
+            List<StoreResponse> stores = getTop5StoresByDistance(member.getLat(), member.getLon(), 0.5);
             var discordWebhook = getDiscordWebhookForRecommendLunch(stores);
             HttpStatusCode statusCode = restTemplate.postForEntity(
                     discordConfig.getWebhookUrl(), discordWebhook, String.class).getStatusCode();
