@@ -27,4 +27,8 @@ public class Member {
 
     @Column
     private String username;
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
