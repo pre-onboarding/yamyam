@@ -1,5 +1,6 @@
 package com.wanted.yamyam.api.review.service;
 
+import com.wanted.yamyam.api.review.dto.StoreByReviewListResponse;
 import com.wanted.yamyam.domain.member.repo.MemberRepository;
 import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.review.entity.ReviewId;
@@ -10,6 +11,9 @@ import com.wanted.yamyam.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -44,6 +48,18 @@ public class ReviewService {
         // 이미 작성한 리뷰가 존재하는 경우
         if (reviewRepository.existsById(new ReviewId(review.getMember(), review.getStore())))
             throw new ErrorException(ErrorCode.DUPLICATE_REVIEW);
+    }
+
+    /**
+     * storeId로 맛집에 리뷰 리스트를 조회해서 리스트를 반환한다.
+     * @param storeId
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<StoreByReviewListResponse> reviewList(Long storeId) {
+        List<StoreByReviewListResponse> responses = reviewRepository.findByStoreId(storeId).stream().map(StoreByReviewListResponse::new).collect(Collectors.toList());
+
+        return responses;
     }
 
 }
