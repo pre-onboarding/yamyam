@@ -57,6 +57,7 @@ public class ReviewService {
      */
     @Transactional(readOnly = true)
     public List<StoreByReviewListResponse> reviewList(Long storeId) {
+        storeRepository.findById(storeId).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
         List<StoreByReviewListResponse> responses = reviewRepository.findByStoreId(storeId).stream().map(StoreByReviewListResponse::new).collect(Collectors.toList());
 
         return responses;
