@@ -1,5 +1,6 @@
 package com.wanted.yamyam.api.member.service;
 
+import com.wanted.yamyam.api.member.dto.MemberLocationRequest;
 import com.wanted.yamyam.api.member.dto.MemberLoginResponse;
 import com.wanted.yamyam.api.member.dto.MemberRequest;
 import com.wanted.yamyam.domain.member.entity.Member;
@@ -46,5 +47,12 @@ public class MemberService {
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
         member.setRefreshToken(refreshToken);
         return new MemberLoginResponse(accessToken, refreshToken);
+    }
+
+    @Transactional
+    public void update(MemberLocationRequest memberRequest, Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_MEMBER));
+        member.setLocation(memberRequest.getLat(), memberRequest.getLon(), memberRequest.isRecommend());
     }
 }
