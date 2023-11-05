@@ -43,20 +43,20 @@ public class JwtTokenProvider implements InitializingBean {
         this.refreshSecretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(String username) {
-        return buildJwtToken(username, accessSecretKey, accessTokenValidity);
+    public String createAccessToken(Long id) {
+        return buildJwtToken(id, accessSecretKey, accessTokenValidity);
     }
 
-    public String createRefreshToken(String username) {
-        return buildJwtToken(username, refreshSecretKey, refreshTokenValidity);
+    public String createRefreshToken(Long id) {
+        return buildJwtToken(id, refreshSecretKey, refreshTokenValidity);
     }
 
-    private String buildJwtToken(String username, Key secretKey, long validityPeriod) {
+    private String buildJwtToken(Long id, Key secretKey, long validityPeriod) {
         long now = (new Date()).getTime();
         Date validity = new Date(now + validityPeriod);
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(String.valueOf(id))
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
