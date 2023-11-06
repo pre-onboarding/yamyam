@@ -11,7 +11,7 @@ public class RedisConfig {
 
     @Bean
     LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory("yamyam-redis", 6379);
+        return new LettuceConnectionFactory("127.0.0.1", 6379);
     }
 
     @Bean
