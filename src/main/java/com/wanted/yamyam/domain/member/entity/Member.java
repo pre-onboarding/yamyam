@@ -36,4 +36,17 @@ public class Member {
 
     @Column
     private boolean useRecommendLunch;
+ 
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setLocation(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
+
+    public void setRecommend(boolean useRecommendLunch) {
+        this.useRecommendLunch = useRecommendLunch;
+    }
 }
