@@ -1,8 +1,13 @@
 package com.wanted.yamyam.api.store.service;
 
+import com.wanted.yamyam.api.review.dto.StoreByReviewListResponse;
+import com.wanted.yamyam.api.review.service.ReviewService;
+import com.wanted.yamyam.api.store.dto.StoreDetailResponse;
 import com.wanted.yamyam.api.store.dto.StoreResponse;
 import com.wanted.yamyam.api.store.dto.StoreListResponse;
+import com.wanted.yamyam.domain.store.entity.Store;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
+import com.wanted.yamyam.global.exception.ErrorCode;
 import com.wanted.yamyam.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -139,5 +144,21 @@ public class StoreService {
         double newRating = (oldRating * oldRatingTotalCount + review.getScore()) / (oldRatingTotalCount + 1);
         storeRepository.updateRatingById(review.getStore().getId(), newRating);
         return newRating;
+    }
+
+    /**
+     * 맛집 상세 정보
+     * storeId로 맛집을 상세 정보를 조회한다. 만약 존재하지 않는 맛집이면 예외처리.
+     * storeId로 조회한 맛집에 리뷰 리스트를 조회한다.
+     * 조회한 맛집 상세 정보, 리뷰 리스트를 반환한다.
+     * @param storeId
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public StoreDetailResponse storeDetail(Long storeId) {
+        Optional<Store> store = Optional.ofNullable(storeRepository.findById(storeId).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE)));
+        StoreDetailResponse response = new StoreDetailResponse(store.get());
+
+        return response;
     }
 }
