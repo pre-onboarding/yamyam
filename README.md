@@ -393,5 +393,5 @@
 
 
 ## ERD
-![image](https://github.com/pre-onboarding/yamyam/assets/80959635/722c6f64-ca33-4920-9c5f-d5ceab475ccb)
+<img width="766" alt="스크린샷 2023-11-01 오전 10 52 09" src="https://github.com/pre-onboarding/yamyam/assets/102012155/85a88692-02c5-44a7-b396-69969630906b">
 
