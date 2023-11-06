@@ -20,6 +20,7 @@ public enum ErrorCode {
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "액세스 토큰이 만료 되었습니다."),
     INVALID_JWT(HttpStatus.UNAUTHORIZED, "잘못된 JWT 입니다."),
     MISSING_JWT(HttpStatus.NOT_FOUND, "JWT가 없습니다.");
+    LAT_LON_NO_VALUE(HttpStatus.BAD_REQUEST, "lat과lon값을 입력해주세요.");
 
     private final HttpStatus httpStatus;
     private final String message;

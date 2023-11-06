@@ -17,10 +17,10 @@ public class Store {
     private Long id;
 
     @Column
-    private String lat;
+    private double lat;
 
     @Column
-    private String lon;
+    private double lon;
 
     @Column
     private String name;
@@ -32,6 +32,5 @@ public class Store {
     private String category;
 
     @Column
-    private String rating;
-
+    private double rating;
 }
