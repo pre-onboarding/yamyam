@@ -383,14 +383,28 @@
 </details>
   
 ## 기술스택
+### Language
+<img src="https://img.shields.io/badge/JAVA-FFF000?style=for-the-badge&logo=JAVA&logoColor=white"/>
+
+### Api Spec
+<img src="https://img.shields.io/badge/Swagger-6DB33F?style=for-the-badge&logo=SWAGGER&logoColor=white">
+
+### Web Frameworks & related technologies
+
 <p>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"/>
 <img src="https://img.shields.io/badge/JPA-6DB33F?style=for-the-badge&logo=JPA&logoColor=white">
+<img src="https://img.shields.io/badge/SPRING SECURITY-6DB33F?style=for-the-badge&logo=SPRING SECURITY&logoColor=white">
+<img src="https://img.shields.io/badge/JWT-6DB33F?style=for-the-badge&logo=JWT&logoColor=white">
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=orange">
 <img src="https://img.shields.io/badge/QueryDSL-0285c9?style=for-the-badge&logo=qeurydsl&logoColor=white">
 </p>
 
+### Database
+<p>
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=orange">
+<img src="https://img.shields.io/badge/REDIS-FF0000?style=for-the-badge&logo=REDIS&logoColor=white">
+</p>
 
 ## ERD
 <img width="766" alt="스크린샷 2023-11-01 오전 10 52 09" src="https://github.com/pre-onboarding/yamyam/assets/102012155/85a88692-02c5-44a7-b396-69969630906b">
