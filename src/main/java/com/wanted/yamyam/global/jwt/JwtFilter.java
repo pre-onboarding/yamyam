@@ -47,8 +47,6 @@ public class JwtFilter extends GenericFilterBean {
                 sendResponse(httpServletResponse, ErrorCode.ACCESS_TOKEN_EXPIRED);
             } catch (JwtException | IllegalArgumentException e) {
                 sendResponse(httpServletResponse, ErrorCode.INVALID_JWT);
-            } catch (ErrorException e) {
-                sendResponse(httpServletResponse, ErrorCode.MISSING_JWT);
             }
         } else {
             chain.doFilter(request, response);
@@ -63,8 +61,6 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private String convertObjectToJson(Object code) throws IOException {
-        if (code == null)
-            return null;
         return objectMapper.writeValueAsString(code);
     }
 
