@@ -46,3 +46,4 @@ discord:
 
 
 
+apiKey: ${API_KEY}

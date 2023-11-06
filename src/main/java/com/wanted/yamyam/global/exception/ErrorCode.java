@@ -16,6 +16,8 @@ public enum ErrorCode {
     NON_EXISTENT_STORE(HttpStatus.BAD_REQUEST, "존재하지 않는 맛집입니다."),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "올바르지 않는 비밀번호입니다."),
     WRONG_USERNAME(HttpStatus.BAD_REQUEST, "올바르지 않는 유저네임입니다."),
+    INVALID_FILE_LIST(HttpStatus.BAD_REQUEST,"유효하지 않는 JSON 파일입니다."),
+    OPENAPI_ERROR(HttpStatus.BAD_REQUEST,"오픈 api 데이터에서 오류가 발생했습니다"),
     LAT_LON_NO_VALUE(HttpStatus.BAD_REQUEST, "lat과lon값을 입력해주세요.");
 
     private final HttpStatus httpStatus;
