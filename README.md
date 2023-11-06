@@ -7,7 +7,7 @@
 </p>
 
 ## 소개
-안녕하세여 기업형 과제를 맡게된 원티드 프리온 보딩 L팀입니다. 
+안녕하세여 기업형 과제를 맡게된 원티드 프리온 보딩 L팀입니다.    
 저희는 사용자가 원하는 요구사항을 분석하여 프로젝트를 구현하였고, 
 더 필요한 내용은 회의를 통해 추가 했습니다.    
 자세한 내용이나 회의록을 보고 싶으면 [깃허브 위키](https://github.com/pre-onboarding/yamyam/wiki)를 확인해주세요!!
@@ -393,4 +393,5 @@
 
 
 ## ERD
-![image](https://github.com/pre-onboarding/yamyam/assets/80959635/181b698f-aaa9-41fb-9b45-c2205ca74bfa)
+![image](https://github.com/pre-onboarding/yamyam/assets/80959635/722c6f64-ca33-4920-9c5f-d5ceab475ccb)
+
