@@ -19,7 +19,10 @@ public enum ErrorCode {
     LAT_LON_NO_VALUE(HttpStatus.BAD_REQUEST, "lat과lon값을 입력해주세요."),
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "액세스 토큰이 만료 되었습니다."),
     INVALID_JWT(HttpStatus.UNAUTHORIZED, "잘못된 JWT 입니다."),
-    MISSING_JWT(HttpStatus.NOT_FOUND, "JWT가 없습니다.");
+    MISSING_JWT(HttpStatus.NOT_FOUND, "JWT가 없습니다."),
+    INVALID_FILE_LIST(HttpStatus.BAD_REQUEST,"유효하지 않는 JSON 파일입니다."),
+    OPENAPI_ERROR(HttpStatus.BAD_REQUEST,"오픈 api 데이터에서 오류가 발생했습니다"),
+    LAT_LON_NO_VALUE(HttpStatus.BAD_REQUEST, "lat과lon값을 입력해주세요.");
 
     private final HttpStatus httpStatus;
     private final String message;
