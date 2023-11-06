@@ -8,13 +8,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @IdClass(ReviewId.class)
-public class Review {
+public class Review implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
