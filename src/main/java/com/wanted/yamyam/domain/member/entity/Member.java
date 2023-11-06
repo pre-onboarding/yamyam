@@ -35,7 +35,7 @@ public class Member {
     private double lon;
 
     @Column
-    private boolean useRecommendLunch;
+    private boolean recommend;
  
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
@@ -46,7 +46,7 @@ public class Member {
         this.lon = lon;
     }
 
-    public void setRecommend(boolean useRecommendLunch) {
-        this.useRecommendLunch = useRecommendLunch;
+    public void setRecommend(boolean recommend) {
+        this.recommend = recommend;
     }
 }
