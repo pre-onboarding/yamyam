@@ -53,7 +53,8 @@ public class MemberService {
     @Transactional
     public void update(MemberLocationRequest memberRequest, Long id) {
         Member member = findByid(id);
-        member.setLocation(memberRequest.getLat(), memberRequest.getLon(), memberRequest.isRecommend());
+        member.setLocation(memberRequest.getLat(), memberRequest.getLon());
+        member.setRecommend(member.isRecommend());
     }
 
     public MemberResponse getInfo(long id) {

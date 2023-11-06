@@ -41,9 +41,12 @@ public class Member {
         this.refreshToken = refreshToken;
     }
 
-    public void setLocation(double lat, double lon, boolean recommend) {
+    public void setLocation(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
+    }
+
+    public void setRecommend(boolean recommend) {
         this.recommend = recommend;
     }
 }
