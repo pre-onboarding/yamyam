@@ -27,4 +27,13 @@ public class Member {
 
     @Column
     private String username;
+
+    @Column
+    private double lat;
+
+    @Column
+    private double lon;
+
+    @Column
+    private boolean useRecommendLunch;
 }

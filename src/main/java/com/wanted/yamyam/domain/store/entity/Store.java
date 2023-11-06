@@ -6,32 +6,33 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @IdClass(StoreId.class)
-public class Store {
+public class Store implements Serializable {
 
     @Id
     @Column(name = "store_name")
     private String name;
-
+  
     @Id
     @Column(name = "store_address")
     private String address;
 
     @Column
-    private String lat;
+    private double lat;
 
     @Column
-    private String lon;
+    private double lon;
 
     @Column
     private String category;
 
     @Column
-    private String rating;
-
+    private double rating;
 }

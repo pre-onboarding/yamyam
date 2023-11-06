@@ -33,6 +33,17 @@ spring:
   sql:
     init:
       mode: always
+  servlet:
+    multipart:
+      max-file-size: 32KB
+  data:
+    redis:
+      connect-timeout: 2s
+      timeout: 1s
+
+discord:
+  webhookUrl: ${DISCORD_WEBHOOK_URL}
+
 
 
 apiKey: ${API_KEY}
