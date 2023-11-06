@@ -50,7 +50,7 @@ class StoreControllerTest {
         resultActions2.andExpect(status().isOk());
     }
 
-    @DisplayName("맛집 목록조회")
+    @DisplayName("맛집 상세 정보 조회")
     @Test
     @Transactional(readOnly = true)
     void storeDetail() throws Exception {

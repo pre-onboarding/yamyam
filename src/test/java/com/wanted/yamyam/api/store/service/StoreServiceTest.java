@@ -85,7 +85,7 @@ class StoreServiceTest {
 
     }
 
-    @DisplayName("맛집 상세정보")
+    @DisplayName("맛집 상세 정보 조회")
     @Test
     @Transactional
     void storeDetail() {
