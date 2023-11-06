@@ -1,20 +1,24 @@
 package com.wanted.yamyam.api.store.service;
 
+import com.wanted.yamyam.api.store.dto.StoreDetailResponse;
 import com.wanted.yamyam.api.store.dto.StoreResponse;
 import com.wanted.yamyam.api.store.dto.StoreListResponse;
+import com.wanted.yamyam.domain.store.entity.Store;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
+import com.wanted.yamyam.global.exception.ErrorCode;
 import com.wanted.yamyam.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import static com.wanted.yamyam.global.exception.ErrorCode.LAT_LON_NO_VALUE;
 import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.review.repo.ReviewRepository;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +28,10 @@ public class StoreService {
     private final StoreRepository storeRepository;
   
     private final ReviewRepository reviewRepository;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    private static final String KEY = "storesDetail";
 
     /**
      * 맛집 목록 조회
@@ -139,5 +147,35 @@ public class StoreService {
         double newRating = (oldRating * oldRatingTotalCount + review.getScore()) / (oldRatingTotalCount + 1);
         storeRepository.updateRatingById(review.getStore().getId(), newRating);
         return newRating;
+    }
+
+    /**
+     * 맛집 상세 정보
+     * storeId로 맛집을 상세 정보를 조회한다. 만약 존재하지 않는 맛집이면 예외처리.
+     * storeId로 조회한 맛집에 리뷰 리스트를 조회한다.
+     * 조회한 맛집 상세 정보, 리뷰 리스트를 반환한다.
+     * @param storeId
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public StoreDetailResponse storeDetail(Long storeId) {
+        Store store = getStoreDetailFromRedis(storeId);
+
+        if (store == null) {
+            store = storeRepository.findById(storeId).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
+            saveStoreDetailToRedis(store);
+        }
+
+        StoreDetailResponse response = new StoreDetailResponse(store);
+
+        return response;
+    }
+
+    private void saveStoreDetailToRedis(Store store) {
+        redisTemplate.opsForValue().set(KEY + " " + store.getId(), store, Duration.ofMinutes(10));
+    }
+
+    private Store getStoreDetailFromRedis(Long storeId) {
+        return (Store) redisTemplate.opsForValue().get(KEY + " " + storeId);
     }
 }

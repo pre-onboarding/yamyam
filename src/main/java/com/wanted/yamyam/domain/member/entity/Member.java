@@ -27,4 +27,26 @@ public class Member {
 
     @Column
     private String username;
+
+    @Column
+    private double lat;
+
+    @Column
+    private double lon;
+
+    @Column
+    private boolean recommend;
+ 
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setLocation(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
+
+    public void setRecommend(boolean recommend) {
+        this.recommend = recommend;
+    }
 }

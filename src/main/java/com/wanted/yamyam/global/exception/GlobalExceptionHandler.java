@@ -1,5 +1,6 @@
 package com.wanted.yamyam.global.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,4 +36,12 @@ public class GlobalExceptionHandler {
         String errorReason = errors.get(0).getDefaultMessage();
         return new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.name(), errorReason);
     }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    protected ResponseEntity<ErrorResponse> jsonCustomException(ErrorException e) {
+        ErrorResponse response = new ErrorResponse(e.getErrorCode().name(),e.getMessage());
+        log.error("ErrorException {}",e.getMessage());
+        return new ResponseEntity<>(response,e.getErrorCode().getHttpStatus());
+    }
+
 }

@@ -29,4 +29,11 @@ public class StoreResponse {
         this.category = category;
         this.rating = rating;
     }
+
+    @Override
+    public String toString() {
+        return "· 상호명: %s / 주소: %s / 종류: %s / 평점: %s / 거리: %s km"
+                .formatted(name, address, category,
+                        Double.toString(rating).substring(0, 3), Double.toString(distance).substring(0, 4));
+    }
 }

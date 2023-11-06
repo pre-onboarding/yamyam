@@ -1,5 +1,7 @@
 package com.wanted.yamyam.global.jwt;
 
+import com.wanted.yamyam.global.exception.ErrorCode;
+import com.wanted.yamyam.global.exception.ErrorException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -84,6 +86,6 @@ public class JwtTokenProvider implements InitializingBean {
                 .setSigningKey(refreshSecretKey)
                 .build()
                 .parseClaimsJws(token)
-                .getBody();
+                .getBody();       
     }
 }
