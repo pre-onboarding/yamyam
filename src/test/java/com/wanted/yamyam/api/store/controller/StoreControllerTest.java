@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,5 +48,21 @@ class StoreControllerTest {
         // then
         resultActions.andExpect(status().isOk());
         resultActions2.andExpect(status().isOk());
+    }
+
+    @DisplayName("맛집 상세 정보 조회")
+    @Test
+    @Transactional(readOnly = true)
+    void storeDetail() throws Exception {
+        // given
+        Long storeId = 1L;
+
+        // when
+        ResultActions resultActions = mvc.perform(get("/api/v1/stores/" + storeId)
+                .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk());
     }
 }

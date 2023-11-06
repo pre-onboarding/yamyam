@@ -29,14 +29,14 @@ public class Member {
     private String username;
 
     @Column
-    private Double lat;
+    private double lat;
 
     @Column
-    private Double lon;
+    private double lon;
 
-    @Column(nullable = false)
+    @Column
     private boolean recommend;
-
+ 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
