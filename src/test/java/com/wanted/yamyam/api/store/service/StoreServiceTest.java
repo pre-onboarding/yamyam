@@ -3,6 +3,7 @@ package com.wanted.yamyam.api.store.service;
 import com.wanted.yamyam.api.store.dto.StoreDetailResponse;
 import com.wanted.yamyam.api.store.dto.StoreListResponse;
 import com.wanted.yamyam.api.review.dto.ReviewRequest;
+import com.wanted.yamyam.api.store.dto.StoreResponse;
 import com.wanted.yamyam.domain.member.entity.Member;
 import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.review.repo.ReviewRepository;
@@ -15,15 +16,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,17 +54,23 @@ class StoreServiceTest {
     @Transactional(readOnly = true)
     void storeList() {
         // given
-        String sortByDistance = "distance";
-        String sortByRating = "rating";
-        int page = 0;
-        int pageCount = 10;
         String lat = "38.0362201660";
         String lon = "127.3675276602";
         double range = 100.0;
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("distance"));
+
+        List<StoreResponse> list = new ArrayList<>();
+        Page<StoreResponse> page = new PageImpl<>(list);
+
+        // stub
+        when(storeRepository.findByStoreList(any(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble(), anyDouble()))
+                .thenReturn(page);
 
         // when
-        StoreListResponse response = storeService.storeList(sortByDistance, page, pageCount, lat, lon, range);
-        StoreListResponse response2 = storeService.storeList(sortByRating, page, pageCount, lat, lon, range);
+        StoreListResponse response = storeService.storeList(pageable, lat, lon, range);
+
+        Pageable pageable2 = PageRequest.of(0, 10, Sort.by("rating"));
+        StoreListResponse response2 = storeService.storeList(pageable2, lat, lon, range);
 
         // then
         assertThat(response.getStores()).isNotNull();
