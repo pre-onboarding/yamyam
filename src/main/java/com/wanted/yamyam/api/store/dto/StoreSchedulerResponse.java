@@ -1,4 +1,4 @@
-package com.wanted.yamyam.api.store.dto.response;
+package com.wanted.yamyam.api.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreSchedulerResponse {
     @JsonProperty("REFINE_WGS84_LAT")
-    private String lat;
+    private double lat;
     @JsonProperty("REFINE_WGS84_LOGT")
-    private String lon;
+    private double lon;
     @JsonProperty("BIZPLC_NM")
     private String name;
     @JsonProperty("REFINE_ROADNM_ADDR")
@@ -30,8 +30,8 @@ public class StoreSchedulerResponse {
     public static Store toEntity(StoreSchedulerResponse res) {
 
         return Store.builder()
-                .lat(Double.parseDouble(res.getLat()))
-                .lon(Double.parseDouble(res.getLon()))
+                .lat(res.getLat())
+                .lon(res.getLon())
                 .name(res.getName())
                 .address(res.getAddress())
                 .category(res.getCategory())
