@@ -1,6 +1,7 @@
 package com.wanted.yamyam.domain.location.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.wanted.yamyam.domain.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Location implements Serializable {
+public class Location extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

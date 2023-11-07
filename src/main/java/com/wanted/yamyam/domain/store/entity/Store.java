@@ -1,5 +1,6 @@
 package com.wanted.yamyam.domain.store.entity;
 
+import com.wanted.yamyam.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @IdClass(StoreId.class)
-public class Store implements Serializable {
+public class Store extends BaseTimeEntity implements Serializable {
 
     @Id
     @Column(name = "store_name")

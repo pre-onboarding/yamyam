@@ -1,5 +1,6 @@
 package com.wanted.yamyam.domain.review.entity;
 
+import com.wanted.yamyam.domain.BaseTimeEntity;
 import com.wanted.yamyam.domain.member.entity.Member;
 import com.wanted.yamyam.domain.store.entity.Store;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @IdClass(ReviewId.class)
-public class Review implements Serializable {
+public class Review extends BaseTimeEntity implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
