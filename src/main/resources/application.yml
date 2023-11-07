@@ -49,7 +49,7 @@ discord:
 apiKey: ${API_KEY}
 
 jwt:
-  access-secret: asdjsdfkljdsjklfasldweriuojklsdajlkfnjlfsadjaflkasdfjklasdfjkllsajdkf
-  refresh-secret: sdfkjsdfjlkdafiojiewfjklnmsdfklasdklfdskaljklfsdajklsdjlkfsdafasdfsadf
+  access-secret: p3s3WRGpWq6ZIvLoFPCSA3b3oPwJsTY2QfG84zd4EqJrgewLyCIoKeViQ4qX7EHvgqFychb7f3VR4EDqUUWOUw==
+  refresh-secret: p3s3WRGpWq6ZIvLoFPCSA3b3oPwJsTY2QfG84zd4EqJrgewLyCIoKeViQ4qX7EHvgqFychb7f3VR4EDqUUWOUw==
   access-token-validity-in-seconds: 30
   refresh-token-validity-in-seconds: 60
