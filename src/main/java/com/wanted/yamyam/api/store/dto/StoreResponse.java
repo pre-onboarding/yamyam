@@ -18,7 +18,6 @@ public class StoreResponse {
 
     private double rating;
 
-    @Setter
     private double distance;
 
     public StoreResponse(double lat, double lon, String name, String address, String category, double rating) {

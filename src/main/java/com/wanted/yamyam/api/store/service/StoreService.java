@@ -10,6 +10,8 @@ import com.wanted.yamyam.global.exception.ErrorCode;
 import com.wanted.yamyam.global.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +44,7 @@ public class StoreService {
      * @return
      */
     @Transactional(readOnly = true)
-    public StoreListResponse storeList(String sort, int page, int pageCount, String lat, String lon, double range) {
+    public StoreListResponse storeList(Pageable pageable, String lat, String lon, double range) {
         if (lat.isEmpty() || lon.isEmpty()) {
             throw new ErrorException(LAT_LON_NO_VALUE);
         }
@@ -60,80 +62,9 @@ public class StoreService {
 
 
         /** 1. range 반경에 있는 맛집 목록을 StoreResponse에 맞게 불러온다. */
-        List<StoreResponse> list = storeRepository.findByAllList(leftLat, leftLon, rightLat, rightLon);
+        Page<StoreResponse> list = storeRepository.findByStoreList(pageable, Double.parseDouble(lat), Double.parseDouble(lon), leftLat, leftLon, rightLat, rightLon);
 
-        /** 2. 조회한 맛집 목록을 Loop 돌면서 파라미터로 넘어온 위치에서 range 반경에 있는 맛집들과의 거리 차이를 구해서 StoreResponse.distance에 저장한다. */
-        for (int i = 0; i < list.size(); i++) {
-            StoreResponse store = list.get(i);
-            double distance = findDistance(Double.parseDouble(lat), Double.parseDouble(lon), store.getLat(), store.getLon());
-            log.info("distance = {}", distance); // 잠시 거리 차이 확인용 추후 삭제
-            store.setDistance(distance);
-        }
-
-        /**
-         * 3. StoreResponse에 저장된 맛집 목록을 거리순 or 평점순으로 정렬한다.(default = 거리순)
-         * (StoreResponse에 거리차이를 저장 해야 거리순 정렬이 가능해서 직접 정렬했음.)
-         */
-        if (sort.equals("rating")) {
-            list = list.stream().sorted(Comparator.comparing(StoreResponse::getRating).reversed()).collect(Collectors.toList());
-        } else {
-            list = list.stream().sorted(Comparator.comparing(StoreResponse::getDistance)).collect(Collectors.toList());
-        }
-
-        /**
-         * 4. StoreResponse를 파라미터로 들어온 page, pageCount에 맞게 return 하기 위한 페이징처리
-         * (3번 작업(정렬) 후 페이지를 나눠야하기 때문에 직접 페이징 처리 했음.)
-         */
-        int[] paging = storeResponsePaging(page, pageCount, list.size());
-
-        return new StoreListResponse(list.subList(paging[0], paging[1]), paging[2]);
-    }
-
-    /** StoreResponse를 직접 페이징 처리하기 위한 메서드 */
-    private int[] storeResponsePaging(int page, int pageCount, int total) {
-        int totalPage;
-        if (total % pageCount == 0) {
-            totalPage = total / pageCount;
-        } else {
-            totalPage = total / pageCount + 1;
-        }
-
-        int fromIndex = page * pageCount;
-        if (fromIndex < 0) {
-            fromIndex = 0;
-        } else if (fromIndex > total) {
-            fromIndex = total;
-        }
-
-        int toIndex = fromIndex + pageCount;
-        if (toIndex > total) {
-            toIndex = total;
-        }
-
-        return new int[]{fromIndex, toIndex, totalPage};
-    }
-
-    /**
-     * 맛집 목록에 있는 위도, 경도와 입력값으로 들어온 위도, 경도의 거리를 구합니다.
-     * @param lat1
-     * @param lon1
-     * @param lat2
-     * @param lon2
-     * @return
-     */
-    private double findDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
-        double R = 6371; // km
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c;
+        return new StoreListResponse(list.get().collect(Collectors.toList()), list.getTotalPages());
     }
 
     /**
