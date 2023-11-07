@@ -8,6 +8,9 @@ import com.wanted.yamyam.domain.member.repo.MemberRepository;
 import com.wanted.yamyam.global.config.DiscordConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -50,8 +53,8 @@ public class MemberScheduledTask {
     }
 
     private List<StoreResponse> getTop5StoresByDistance(double lat, double lon, double range) {
-        return storeService.storeList("distance", 0, 5,
-                Double.toString(lat), Double.toString(lon), range).getStores();
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("distance"));
+        return storeService.storeList(pageable, Double.toString(lat), Double.toString(lon), range).getStores();
     }
 
     private DiscordWebhook getDiscordWebhookForRecommendLunch(List<StoreResponse> stores) {
