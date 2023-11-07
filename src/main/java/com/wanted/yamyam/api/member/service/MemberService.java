@@ -23,7 +23,7 @@ public class MemberService {
 
     @Transactional
     public void signup(MemberRequest memberRequest) {
-        boolean isExists = memberRepository.existByEmail(memberRequest.getEmail());
+        boolean isExists = memberRepository.existsByEmail(memberRequest.getEmail());
         if (isExists)
             throw new ErrorException(ErrorCode.DUPLICATE_EMAIL);
 

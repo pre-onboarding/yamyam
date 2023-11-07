@@ -11,5 +11,5 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
   
     List<Member> findAllByRecommend(boolean recommend);
 
-    boolean existByEmail(String email);
+    boolean existsByEmail(String email);
 }
