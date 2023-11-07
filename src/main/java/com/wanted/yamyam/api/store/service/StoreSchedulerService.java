@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.yamyam.api.store.dto.response.StoreSchedulerResponse;
+import com.wanted.yamyam.api.store.dto.StoreSchedulerResponse;
 import com.wanted.yamyam.domain.store.entity.Store;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
 import com.wanted.yamyam.global.exception.ErrorCode;
