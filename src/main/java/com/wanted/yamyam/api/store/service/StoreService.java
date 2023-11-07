@@ -4,6 +4,7 @@ import com.wanted.yamyam.api.store.dto.StoreDetailResponse;
 import com.wanted.yamyam.api.store.dto.StoreResponse;
 import com.wanted.yamyam.api.store.dto.StoreListResponse;
 import com.wanted.yamyam.domain.store.entity.Store;
+import com.wanted.yamyam.domain.store.entity.StoreId;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
 import com.wanted.yamyam.global.exception.ErrorCode;
 import com.wanted.yamyam.global.exception.ErrorException;
@@ -158,12 +159,14 @@ public class StoreService {
      * @return
      */
     @Transactional(readOnly = true)
-    public StoreDetailResponse storeDetail(Long storeId) {
+    public StoreDetailResponse storeDetail(String storeId) {
         Store store = getStoreDetailFromRedis(storeId);
 
         if (store == null) {
-            store = storeRepository.findById(storeId).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
-            saveStoreDetailToRedis(store);
+            String[] split = storeId.split(":");
+            StoreId id = new StoreId(split[0], split[1]);
+            store = storeRepository.findById(id).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
+            saveStoreDetailToRedis(store, id);
         }
 
         StoreDetailResponse response = new StoreDetailResponse(store);
@@ -171,11 +174,11 @@ public class StoreService {
         return response;
     }
 
-    private void saveStoreDetailToRedis(Store store) {
-        redisTemplate.opsForValue().set(KEY + " " + store.getId(), store, Duration.ofMinutes(10));
+    private void saveStoreDetailToRedis(Store store, StoreId id) {
+        redisTemplate.opsForValue().set(KEY + " " + id, store, Duration.ofMinutes(10));
     }
 
-    private Store getStoreDetailFromRedis(Long storeId) {
+    private Store getStoreDetailFromRedis(String storeId) {
         return (Store) redisTemplate.opsForValue().get(KEY + " " + storeId);
     }
 }
