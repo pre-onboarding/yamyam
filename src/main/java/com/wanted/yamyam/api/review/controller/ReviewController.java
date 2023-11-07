@@ -42,8 +42,7 @@ public class ReviewController {
         Review review = mapReviewRequestDtoToReviewEntity(requestBody, storeId, memberId);
         Review savedReview = reviewService.saveReview(review);
         storeService.updateRating(savedReview);
-        String locationUrl = "/api/v1/stores/%s/reviews".formatted(storeId);
-        return ResponseEntity.created(URI.create(locationUrl)).body(mapReviewEntityToReviewResponseDto(savedReview));
+        return ResponseEntity.ok(mapReviewEntityToReviewResponseDto(savedReview));
     }
 
     private Review mapReviewRequestDtoToReviewEntity(ReviewRequest reviewRequest, String storeId, long memberId) {
@@ -59,7 +58,7 @@ public class ReviewController {
     private ReviewResponse mapReviewEntityToReviewResponseDto(Review review) {
         return new ReviewResponse(
                 review.getMember().getId(),
-                review.getStore().getName() + review.getStore().getAddress(),
+                review.getStore().getName() + ":" + review.getStore().getAddress(),
                 review.getMember().getUsername(),
                 review.getScore(),
                 review.getContent());
