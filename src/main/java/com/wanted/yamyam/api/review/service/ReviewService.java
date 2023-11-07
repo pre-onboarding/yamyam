@@ -6,6 +6,7 @@ import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.review.entity.ReviewId;
 import com.wanted.yamyam.domain.review.repo.ReviewRepository;
 import com.wanted.yamyam.domain.store.entity.Store;
+import com.wanted.yamyam.domain.store.entity.StoreId;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
 import com.wanted.yamyam.global.exception.ErrorCode;
 import com.wanted.yamyam.global.exception.ErrorException;
@@ -41,7 +42,7 @@ public class ReviewService {
         validateData(review);
         var reviewEntity = Review.builder()
                 .member(memberRepository.getReferenceById(review.getMember().getId()))
-                .store(storeRepository.getReferenceById(review.getStore().getId()))
+                .store(storeRepository.getReferenceById(new StoreId(review.getStore().getName(), review.getStore().getAddress())))
                 .score(review.getScore())
                 .content(review.getContent()).build();
         return reviewRepository.save(reviewEntity);
@@ -49,7 +50,7 @@ public class ReviewService {
 
     private void validateData(Review review) {
         // 존재하지 않는 맛집인 경우
-        if (!storeRepository.existsById(review.getStore().getId()))
+        if (!storeRepository.existsById(new StoreId(review.getStore().getName(), review.getStore().getAddress())))
             throw new ErrorException(ErrorCode.NON_EXISTENT_STORE);
 
         // 이미 작성한 리뷰가 존재하는 경우

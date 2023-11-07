@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public record ReviewResponse(
         long memberId,
-        long storeId,
+        String storeId,
         String username,
         int score,
         String content
