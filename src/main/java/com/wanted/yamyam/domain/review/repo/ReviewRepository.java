@@ -9,5 +9,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, ReviewId> {
     long countByStoreId(Long storeId);
 
-    List<Review> findByStoreId(Long storeId);
+    List<Review> findByStoreId(String storeId);
 }

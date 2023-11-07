@@ -33,7 +33,7 @@ public class StoreController {
     }
 
     @GetMapping("/{storeId}")
-    public ResponseEntity storeDetail(@PathVariable Long storeId) {
+    public ResponseEntity storeDetail(@PathVariable String storeId) {
         StoreDetailResponse storeDetail = storeService.storeDetail(storeId);
         List<StoreByReviewListResponse> reviewList = reviewService.reviewList(storeId);
 

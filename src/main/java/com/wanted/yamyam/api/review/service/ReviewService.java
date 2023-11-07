@@ -6,6 +6,7 @@ import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.review.entity.ReviewId;
 import com.wanted.yamyam.domain.review.repo.ReviewRepository;
 import com.wanted.yamyam.domain.store.entity.Store;
+import com.wanted.yamyam.domain.store.entity.StoreId;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
 import com.wanted.yamyam.global.exception.ErrorCode;
 import com.wanted.yamyam.global.exception.ErrorException;
@@ -63,8 +64,10 @@ public class ReviewService {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<StoreByReviewListResponse> reviewList(Long storeId) {
-        storeRepository.findById(storeId).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
+    public List<StoreByReviewListResponse> reviewList(String storeId) {
+        String[] split = storeId.split(":");
+        StoreId id = new StoreId(split[0], split[1]);
+        storeRepository.findById(id).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
         List<Review> reviews = getStoreByReviewListFromRedis(storeId);
 
         if (reviews == null) {
@@ -77,11 +80,11 @@ public class ReviewService {
         return responses;
     }
 
-    private void saveStoreByReviewListToRedis(Long storeId, List<Review> reviews) {
+    private void saveStoreByReviewListToRedis(String storeId, List<Review> reviews) {
         redisTemplate.opsForValue().set(KEY + " " + storeId, reviews, Duration.ofMinutes(10));
     }
 
-    private List<Review> getStoreByReviewListFromRedis(Long storeId) {
+    private List<Review> getStoreByReviewListFromRedis(String storeId) {
         return (List<Review>) redisTemplate.opsForValue().get(KEY + " " + storeId);
     }
 

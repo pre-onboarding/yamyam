@@ -11,8 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class StoreDetailResponse {
 
-    private Long id;
-
     private double lat;
 
     private double lon;
@@ -27,7 +25,6 @@ public class StoreDetailResponse {
 
 
     public StoreDetailResponse(Store store) {
-        this.id = store.getId();
         this.lat = store.getLat();
         this.lon = store.getLon();
         this.name = store.getName();
