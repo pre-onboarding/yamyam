@@ -167,7 +167,7 @@ public class StoreService {
             String[] split = storeId.split(":");
             StoreId id = new StoreId(split[0], split[1]);
             store = storeRepository.findById(id).orElseThrow(() -> new ErrorException(ErrorCode.NON_EXISTENT_STORE));
-            saveStoreDetailToRedis(store, id);
+            saveStoreDetailToRedis(store, storeId);
         }
 
         StoreDetailResponse response = new StoreDetailResponse(store);
@@ -175,8 +175,8 @@ public class StoreService {
         return response;
     }
 
-    private void saveStoreDetailToRedis(Store store, StoreId id) {
-        redisTemplate.opsForValue().set(KEY + " " + id, store, Duration.ofMinutes(10));
+    private void saveStoreDetailToRedis(Store store, String storeId) {
+        redisTemplate.opsForValue().set(KEY + " " + storeId, store, Duration.ofMinutes(10));
     }
 
     private Store getStoreDetailFromRedis(String storeId) {
