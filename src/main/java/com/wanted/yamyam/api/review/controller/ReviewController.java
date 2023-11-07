@@ -10,6 +10,7 @@ import com.wanted.yamyam.domain.store.entity.Store;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -35,20 +36,20 @@ public class ReviewController {
      * @author 정성국
      */
     @PostMapping("stores/{storeId}/reviews")
-    public ResponseEntity<ReviewResponse> saveReview(@PathVariable long storeId,
+    public ResponseEntity<ReviewResponse> saveReview(@PathVariable String storeId,
                                                      @Valid @RequestBody ReviewRequest requestBody) {
-
-        // TODO: Member 구현 후 사용자별 memberId 대입 되도록 수정 요함
-        Review review = mapReviewRequestDtoToReviewEntity(requestBody, storeId, 1L);
+        long memberId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Review review = mapReviewRequestDtoToReviewEntity(requestBody, storeId, memberId);
         Review savedReview = reviewService.saveReview(review);
         storeService.updateRating(savedReview);
-        String locationUrl = "/api/v1/stores/%d/reviews".formatted(storeId);
+        String locationUrl = "/api/v1/stores/%s/reviews".formatted(storeId);
         return ResponseEntity.created(URI.create(locationUrl)).body(mapReviewEntityToReviewResponseDto(savedReview));
     }
 
-    private Review mapReviewRequestDtoToReviewEntity(ReviewRequest reviewRequest, long storeId, long memberId) {
+    private Review mapReviewRequestDtoToReviewEntity(ReviewRequest reviewRequest, String storeId, long memberId) {
+        String[] splitStoreId = storeId.split(":");
         return Review.builder()
-                .store(Store.builder().id(storeId).build())
+                .store(Store.builder().name(splitStoreId[0]).address(splitStoreId[1]).build())
                 .member(Member.builder().id(memberId).build())
                 .score(reviewRequest.score())
                 .content(reviewRequest.content())
@@ -58,7 +59,7 @@ public class ReviewController {
     private ReviewResponse mapReviewEntityToReviewResponseDto(Review review) {
         return new ReviewResponse(
                 review.getMember().getId(),
-                review.getStore().getId(),
+                review.getStore().getName() + review.getStore().getAddress(),
                 review.getMember().getUsername(),
                 review.getScore(),
                 review.getContent());
