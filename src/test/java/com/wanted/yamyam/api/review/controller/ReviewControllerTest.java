@@ -49,12 +49,11 @@ public class ReviewControllerTest {
     @Test
     @DisplayName("정상적인 맛집 평가 생성 요청")
     void shouldSaveReviewAboutStoreAndReturn201() throws Exception {
-
         var testScore = 5;
         var testContent = "맛있어요!!";
         var testUsername = "식신";
         var testMember = Member.builder().id(1L).username(testUsername).build();
-        var testStore = Store.builder().id(1L).build();
+        var testStore = Store.builder().name("영화루").address("경기도").build();
         var testReviewRequest = new ReviewRequest(testScore, testContent);
         var testReview = Review.builder()
                 .member(testMember)
@@ -67,7 +66,7 @@ public class ReviewControllerTest {
 
         var reviewResponse = new ReviewResponse(
                 testMember.getId(),
-                testStore.getId(),
+                testStore.getName() + testStore.getAddress(),
                 testUsername, testScore, testContent);
 
         mockMvc.perform(post("/api/v1/stores/1/reviews")

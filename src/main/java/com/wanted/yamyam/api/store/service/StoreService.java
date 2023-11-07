@@ -143,10 +143,11 @@ public class StoreService {
      */
     @Transactional
     public double updateRating(Review review) {
-        long oldRatingTotalCount = reviewRepository.countByStoreId(review.getStore().getId()) - 1;
+        var storeId = new StoreId(review.getStore().getName(), review.getStore().getAddress());
+        long oldRatingTotalCount = reviewRepository.countByStoreNameAndStoreAddress(storeId.getName(), storeId.getAddress()) - 1;
         double oldRating = review.getStore().getRating();
         double newRating = (oldRating * oldRatingTotalCount + review.getScore()) / (oldRatingTotalCount + 1);
-        storeRepository.updateRatingById(review.getStore().getId(), newRating);
+        storeRepository.updateRatingById(storeId.getName(), storeId.getAddress(), newRating);
         return newRating;
     }
 

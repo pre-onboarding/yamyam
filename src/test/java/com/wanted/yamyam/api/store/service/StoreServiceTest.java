@@ -76,7 +76,7 @@ class StoreServiceTest {
         var oldRating = 2.5;
         var oldRatingTotalCount = 30L;
         var testMember = Member.builder().id(1L).username(testUsername).build();
-        var testStore = Store.builder().id(1L).rating(oldRating).build();
+        var testStore = Store.builder().name("영화루").address("경기도").rating(oldRating).build();
         var testReviewRequest = new ReviewRequest(testScore, testContent);
         var testReview = Review.builder()
                 .member(testMember)
@@ -86,7 +86,7 @@ class StoreServiceTest {
                 .build();
 
         // 새로운 review를 저장한 후에 count를 수행하므로, 기존 count 값에 + 1을 해줍니다.
-        when(reviewRepository.countByStoreId(testReview.getStore().getId())).thenReturn(oldRatingTotalCount + 1);
+        when(reviewRepository.countByStoreNameAndStoreAddress(testReview.getStore().getName(), testReview.getStore().getAddress())).thenReturn(oldRatingTotalCount + 1);
 
         var newRating = "2.6";
 

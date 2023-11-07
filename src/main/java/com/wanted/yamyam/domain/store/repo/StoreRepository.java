@@ -17,8 +17,8 @@ public interface StoreRepository extends JpaRepository<Store, StoreId> ,StoreRep
     List<StoreResponse> findByAllList(@Param("lat1") double lat1, @Param("lon1") double lon1, @Param("lat2") double lat2, @Param("lon2") double lon2);
   
     @Modifying
-    @Query("UPDATE Store SET rating = ?2 WHERE id = ?1")
-    void updateRatingById(Long id, double rating);
+    @Query("UPDATE Store SET rating = ?3 WHERE name = ?1 AND address = ?2")
+    void updateRatingById(String storeName, String StoreAddress, double rating);
 }
 
     

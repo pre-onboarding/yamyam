@@ -47,3 +47,9 @@ discord:
 
 
 apiKey: ${API_KEY}
+
+jwt:
+  access-secret: asdjsdfkljdsjklfasldweriuojklsdajlkfnjlfsadjaflkasdfjklasdfjkllsajdkf
+  refresh-secret: sdfkjsdfjlkdafiojiewfjklnmsdfklasdklfdskaljklfsdajklsdjlkfsdafasdfsadf
+  access-token-validity-in-seconds: 30
+  refresh-token-validity-in-seconds: 60

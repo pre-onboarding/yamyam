@@ -58,7 +58,7 @@ class ReviewServiceTest {
 
         // stub
         when(storeRepository.findById(any())).thenReturn(Optional.of(store));
-        when(reviewRepository.findByStoreId(storeId)).thenReturn(list);
+        when(reviewRepository.findByStoreNameAndStoreAddress(storeId.split(":")[0], storeId.split(":")[1])).thenReturn(list);
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
 
         // when

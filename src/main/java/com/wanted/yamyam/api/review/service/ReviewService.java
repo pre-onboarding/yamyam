@@ -5,7 +5,6 @@ import com.wanted.yamyam.domain.member.repo.MemberRepository;
 import com.wanted.yamyam.domain.review.entity.Review;
 import com.wanted.yamyam.domain.review.entity.ReviewId;
 import com.wanted.yamyam.domain.review.repo.ReviewRepository;
-import com.wanted.yamyam.domain.store.entity.Store;
 import com.wanted.yamyam.domain.store.entity.StoreId;
 import com.wanted.yamyam.domain.store.repo.StoreRepository;
 import com.wanted.yamyam.global.exception.ErrorCode;
@@ -71,7 +70,7 @@ public class ReviewService {
         List<Review> reviews = getStoreByReviewListFromRedis(storeId);
 
         if (reviews == null) {
-            reviews = reviewRepository.findByStoreId(storeId);
+            reviews = reviewRepository.findByStoreNameAndStoreAddress(id.getName(), id.getAddress());
             saveStoreByReviewListToRedis(storeId, reviews);
         }
 

@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,10 +29,12 @@ public class FileUploadTest {
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 resource.getFilename(),
-                MediaType.MULTIPART_FORM_DATA_VALUE,
-                resource.getInputStream());
+                "text/csv",
+                resource.getContentAsByteArray());
 
-        mvc.perform(multipart("/api/v1/locations").file(file))
+        mvc.perform(multipart(HttpMethod.POST, "/api/v1/locations")
+                        .file(file)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/v1/locations"))
                 .andExpect(jsonPath("$.['countTotal']").value(295));

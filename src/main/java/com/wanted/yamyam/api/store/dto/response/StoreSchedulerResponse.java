@@ -30,8 +30,8 @@ public class StoreSchedulerResponse {
     public static Store toEntity(StoreSchedulerResponse res) {
 
         return Store.builder()
-                .lat(res.getLat())
-                .lon(res.getLon())
+                .lat(Double.parseDouble(res.getLat()))
+                .lon(Double.parseDouble(res.getLon()))
                 .name(res.getName())
                 .address(res.getAddress())
                 .category(res.getCategory())

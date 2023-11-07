@@ -25,8 +25,8 @@ public class Review implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
-            @JoinColumn(name = "store_name"),
-            @JoinColumn(name = "store_address")
+            @JoinColumn(name = "store_address"),
+            @JoinColumn(name = "store_name")
     })
     private Store store;
 

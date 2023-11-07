@@ -37,7 +37,7 @@ public class MemberScheduledTask {
      */
     @Scheduled(cron = "0 30 11 * * ?", zone = "Asia/Seoul")
     public void recommendLunch() {
-        List<Member> members = memberRepository.findAllByUseRecommendLunch(true);
+        List<Member> members = memberRepository.findAllByRecommend(true);
         members.forEach(member -> {
             List<StoreResponse> stores = getTop5StoresByDistance(member.getLat(), member.getLon(), 0.5);
             var discordWebhook = getDiscordWebhookForRecommendLunch(stores);
