@@ -381,7 +381,12 @@
 
 </div>
 </details>
-  
+
+## 역할 분담
+|박정민|박현준|서명진|정성국|
+|:-----:|:-----:|:-----:|:-----:|
+|사용자 회원가입<br>사용자 로그인<br> 사용자 설정 업데이트<br> 사용자 정보  |  맛집 목록<br> 맛집 상세정보<br> 맛집 상세정보 고도화 |데이터 수집<br> 데이터 전처리<br> 데이터 저장<br> 자동화   | csv 업로드<br> 시군구 목록<br> 맛집 평가 생성<br> 시구군 목록 고도화<br> Discoad Webhook |
+
 ## 기술스택
 ### Language
 <img src="https://img.shields.io/badge/JAVA-FFF000?style=for-the-badge&logo=JAVA&logoColor=white"/>
